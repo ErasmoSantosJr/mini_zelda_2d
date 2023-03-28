@@ -12,14 +12,17 @@ import javax.swing.JFrame;
 
 public class Game extends Canvas implements Runnable, KeyListener{
 
-	public static int WIDTH = 480, HEIGHT = 480;
+	public static int WIDTH = 640, HEIGHT = 480;
+	public static int SCALE = 3;
 	public Player player;
+	public Word word;
 	
 	public Game() {
 		this.addKeyListener(this);
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-
-		player = new Player(0,0);
+		new Spritesheet();
+		player = new Player(32,32);
+		word = new Word();
 	}
 	
 	public void tick() {
@@ -36,10 +39,11 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		
 		Graphics g = bs.getDrawGraphics();
 		
-		g.setColor(Color.black);
-		g.fillRect(0, 0, WIDTH,HEIGHT);
+		g.setColor(new Color(0,135,13));
+		g.fillRect(0, 0, WIDTH*SCALE,HEIGHT*SCALE);
 		
 		player.render(g);
+		word.render(g);
 		
 		bs.show();
 	}
@@ -89,6 +93,10 @@ public class Game extends Canvas implements Runnable, KeyListener{
 			player.right = true;
 		}else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
 			player.left = true;
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+			player.shoot = true;
 		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_UP) {
